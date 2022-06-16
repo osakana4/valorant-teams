@@ -1,6 +1,6 @@
 # Valorant Teams
-フルパでのValorantの戦績を管理するWebApp
-Valorant Unofficial APIを使用
+フルパでのValorantの戦績を管理するWebApp  
+Valorant Unofficial APIを使用  
 https://github.com/Henrik-3/unofficial-valorant-api
 
 - 実装機能

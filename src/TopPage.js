@@ -5,6 +5,7 @@ import CheckBox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 
+import Ascent from './images/Ascent.png'
 
 const BackGroundPaper = styled(Paper)({
     width: '1400px',
@@ -32,15 +33,16 @@ const ResultPaper = styled(Paper)({
 
 const MapPaper = styled(Paper)({
     width: '330px',
+    height: '185px',
     margin: '10px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
 })
 
-
-
 const TopPage = () => {
+    const maps = ['Ascent', 'Bind', 'Split', 'Icebox', 'Haven', 'Fracture', 'Breeze']
+
     return (
         <BackGroundPaper>
             <PlayersPaper>
@@ -55,27 +57,36 @@ const TopPage = () => {
                 </FormGroup>
             </PlayersPaper>
             <ResultPaper>
-                <MapPaper>
-                    <h3>Ascent</h3>
-                </MapPaper>
-                <MapPaper>
-                    <h3>Bind</h3>
-                </MapPaper>
-                <MapPaper>
-                    <h3>Split</h3>
-                </MapPaper>
-                <MapPaper>
-                    <h3>Icebox</h3>
-                </MapPaper>
-                <MapPaper>
-                    <h3>Haven</h3>
-                </MapPaper>
-                <MapPaper>
-                    <h3>Fracture</h3>
-                </MapPaper>
-                <MapPaper>
-                    <h3>Breeze</h3>
-                </MapPaper>
+                {/* {maps.map((vltMap) => {
+                    return <MapPaper style={{ 
+                        opacity: '0.2',
+                        backgroundImage: `url(${vltMap})`,
+                        backgroundSize: 'cover'
+                    }}>
+                        {vltMap}
+                    </MapPaper>
+                })} */}
+
+                {(() => {
+                    return (
+                        maps.map((vltMap) => {
+                            switch(vltMap) {
+                                case 'Ascent':
+                                    return (
+                                        <MapPaper style={{ 
+                                            opacity: '0.2',
+                                            backgroundImage: `url(${Ascent})`,
+                                            backgroundSize: 'cover'
+                                        }}>
+                                            {vltMap}
+                                        </MapPaper>
+                                    )
+                                default:
+                                    return null
+                            }
+                        })
+                    )
+                })}    
             </ResultPaper>
         </BackGroundPaper>
     )

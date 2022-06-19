@@ -1,9 +1,16 @@
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import TopPage from './TopPage'
 
 function App() {
   return (
-    <div className="App">
-      index
-    </div>
+    <BrowserRouter>
+      <h1>VALORANT TEAMS</h1>
+      <Routes>
+        <Route path="/" element={<TopPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

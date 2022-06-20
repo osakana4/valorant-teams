@@ -6,6 +6,12 @@ import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 
 import Ascent from './images/Ascent.png'
+import Bind from './images/Bind.png'
+import Split from './images/Split.png'
+import Haven from './images/Haven.png'
+import Breeze from './images/Breeze.png'
+import Icebox from './images/Icebox.png'
+import Fracture from './images/Fracture.png'
 
 const BackGroundPaper = styled(Paper)({
     width: '1400px',
@@ -16,6 +22,7 @@ const BackGroundPaper = styled(Paper)({
 
 const PlayersPaper = styled(Paper)({
     width: '300px',
+    height: '40em',
     margin: '10px',
     display: 'flex',
     flexDirection: 'column',
@@ -24,6 +31,7 @@ const PlayersPaper = styled(Paper)({
 
 const ResultPaper = styled(Paper)({
     width: '1050px',
+    height: '40em',
     margin: '10px',
     display: 'flex',
     flexDirection: 'row',
@@ -41,8 +49,46 @@ const MapPaper = styled(Paper)({
 })
 
 const TopPage = () => {
-    const maps = ['Ascent', 'Bind', 'Split', 'Icebox', 'Haven', 'Fracture', 'Breeze']
+    const vltMaps = ['Ascent', 'Bind', 'Split', 'Icebox', 'Haven', 'Fracture', 'Breeze']
 
+    const drawMaps = () => {
+        return vltMaps.sort().map((vltMap) => {
+            var style = {
+                backgroundColor: 'rgba(255,255,255,0.5)',
+                backgroundBlendMode: 'lighten',
+                backgroundSize: 'cover',
+            }
+            switch (vltMap) {
+                case 'Ascent':
+                    style.backgroundImage = `url(${Ascent})`
+                    break
+                case 'Bind':
+                    style.backgroundImage = `url(${Bind})`
+                    break
+                case 'Split':
+                    style.backgroundImage = `url(${Split})`
+                    break
+                case 'Haven':
+                    style.backgroundImage = `url(${Haven})`
+                    break
+                case 'Icebox':
+                    style.backgroundImage = `url(${Icebox})`
+                    break
+                case 'Breeze':
+                    style.backgroundImage = `url(${Breeze})`
+                    break
+                case 'Fracture':
+                    style.backgroundImage = `url(${Fracture})`
+                    break
+            }
+            console.log(style)
+            return (
+                <MapPaper style={style} key={vltMap}>
+                    {vltMap}
+                </MapPaper>
+            )
+        }) 
+    }
     return (
         <BackGroundPaper>
             <PlayersPaper>
@@ -57,36 +103,16 @@ const TopPage = () => {
                 </FormGroup>
             </PlayersPaper>
             <ResultPaper>
-                {/* {maps.map((vltMap) => {
+                {/* {vltMaps.map((vltMap) => {
                     return <MapPaper style={{ 
                         opacity: '0.2',
                         backgroundImage: `url(${vltMap})`,
                         backgroundSize: 'cover'
                     }}>
-                        {vltMap}
+                        {vltMap.split('/')[2]}
                     </MapPaper>
                 })} */}
-
-                {(() => {
-                    return (
-                        maps.map((vltMap) => {
-                            switch(vltMap) {
-                                case 'Ascent':
-                                    return (
-                                        <MapPaper style={{ 
-                                            opacity: '0.2',
-                                            backgroundImage: `url(${Ascent})`,
-                                            backgroundSize: 'cover'
-                                        }}>
-                                            {vltMap}
-                                        </MapPaper>
-                                    )
-                                default:
-                                    return null
-                            }
-                        })
-                    )
-                })}    
+                {drawMaps()}
             </ResultPaper>
         </BackGroundPaper>
     )

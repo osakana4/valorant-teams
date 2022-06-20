@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { styled } from '@mui/system'
 import Paper from '@mui/material/Paper'
 import CheckBox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 import Ascent from './images/Ascent.png'
 import Bind from './images/Bind.png'
@@ -12,6 +14,8 @@ import Haven from './images/Haven.png'
 import Breeze from './images/Breeze.png'
 import Icebox from './images/Icebox.png'
 import Fracture from './images/Fracture.png'
+import { PlayerCheckLimit, PlayerNameList } from './TotalProvider'
+import { unstable_createChainedFunction } from '@mui/utils'
 
 const BackGroundPaper = styled(Paper)({
     width: '1400px',
@@ -48,8 +52,25 @@ const MapPaper = styled(Paper)({
     alignItems: 'center'
 })
 
+const AddPlayerPaper = styled(Paper)({
+    width: '280px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+})
+
+const StyledButton = styled(Button)({
+    margin: '5px',
+});
+
 const TopPage = () => {
     const vltMaps = ['Ascent', 'Bind', 'Split', 'Icebox', 'Haven', 'Fracture', 'Breeze']
+    const [playerCheck, setPlayerCheck] = useContext(PlayerCheckLimit)
+    const [playerNameList, setPlayerNameList] = useContext(PlayerNameList)
+    const newPlayer = {
+        playerName: '',
+        playerTag: ''
+    }
 
     const drawMaps = () => {
         return vltMaps.sort().map((vltMap) => {
@@ -80,8 +101,9 @@ const TopPage = () => {
                 case 'Fracture':
                     style.backgroundImage = `url(${Fracture})`
                     break
+                default:
             }
-            console.log(style)
+
             return (
                 <MapPaper style={style} key={vltMap}>
                     {vltMap}
@@ -89,6 +111,25 @@ const TopPage = () => {
             )
         }) 
     }
+
+    const handleUserName = (e) => {
+        newPlayer.playerName = e.target.value
+    }
+
+    const handleUserTag = (e) => {
+        newPlayer.playerTag = e.target.value
+    }
+
+    const handleAddClick = () => {
+        playerNameList.push(newPlayer)
+        setPlayerNameList([...playerNameList])
+        var nameForm = document.getElementById("userName")
+        var tagForm = document.getElementById("userTag")
+        nameForm.value = null
+        tagForm.value = null
+        console.log(playerNameList)
+    }
+
     return (
         <BackGroundPaper>
             <PlayersPaper>
@@ -101,17 +142,17 @@ const TopPage = () => {
                     <FormControlLabel value="Player5" control={<CheckBox />} label="Player5" />
                     <FormControlLabel value="Player5" control={<CheckBox />} label="Player6" />
                 </FormGroup>
+                <AddPlayerPaper>
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                        <TextField margin="normal" id="userName" label="UserName" onChange={handleUserName} />
+                        <TextField margin="normal" id="userTag" label="UserTag" onChange={handleUserTag} />
+                    </div>
+                    <StyledButton variant="contained" color="primary" onClick={handleAddClick}>
+                        Add Player
+                    </StyledButton>
+                </AddPlayerPaper>
             </PlayersPaper>
             <ResultPaper>
-                {/* {vltMaps.map((vltMap) => {
-                    return <MapPaper style={{ 
-                        opacity: '0.2',
-                        backgroundImage: `url(${vltMap})`,
-                        backgroundSize: 'cover'
-                    }}>
-                        {vltMap.split('/')[2]}
-                    </MapPaper>
-                })} */}
                 {drawMaps()}
             </ResultPaper>
         </BackGroundPaper>

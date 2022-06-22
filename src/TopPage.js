@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/system'
 import Paper from '@mui/material/Paper'
 import CheckBox from '@mui/material/Checkbox'
@@ -14,6 +15,7 @@ import Haven from './images/Haven.png'
 import Breeze from './images/Breeze.png'
 import Icebox from './images/Icebox.png'
 import Fracture from './images/Fracture.png'
+import VltLogo from './images/valorant_logo.png'
 import { PlayerCheckLimit, PlayerNameList } from './TotalProvider'
 
 const BackGroundPaper = styled(Paper)({
@@ -73,6 +75,7 @@ const MapButton = styled(Button)({
 
 const TopPage = () => {
     const ValorantAPI = require("unofficial-valorant-api")
+    const navigate = useNavigate()
 
     const vltMaps = ['Ascent', 'Bind', 'Split', 'Icebox', 'Haven', 'Fracture', 'Breeze']
     const [playerCheck, setPlayerCheck] = useContext(PlayerCheckLimit)
@@ -85,10 +88,8 @@ const TopPage = () => {
     async function authAccount(name, tag) {
         const accountData = await ValorantAPI.getAccount(name, tag)
         if (accountData.status === 200) {
-            console.log('true')
             return true
         } else {
-            console.log('false')
             return false
         }
     }
@@ -96,7 +97,18 @@ const TopPage = () => {
     const drawPlayers = () => {
         return playerNameList.sort().map((player) => {
             return (
-                <FormControlLabel value={player.playerName} control={<CheckBox />} label={player.playerName} key={player.playerName} />
+                <div style={{display: 'flex',
+                              flexDirection: 'row'}} key={player.playerTag}>
+                    <FormControlLabel value={player.playerName} control={<CheckBox />} label={player.playerName} key={player.playerName} />
+                    <button style={{backgroundImage: `url(${VltLogo})`,
+                                    backgroundColor: 'red',
+                                    backgroundBlendMode: 'lighten',
+                                    backgroundSize: 'cover',
+                                    width: '30px',
+                                    height: '25px',
+                                    margin: 'auto'}}
+                            onClick={showMatchHistory}></button>
+                </div>
             )
         })
     }
@@ -106,7 +118,7 @@ const TopPage = () => {
             var style = {
                 backgroundColor: 'rgba(255,255,255,0.5)',
                 backgroundBlendMode: 'lighten',
-                backgroundSize: 'cover',
+                backgroundSize: 'contain',
             }
             switch (vltMap) {
                 case 'Ascent':
@@ -175,6 +187,10 @@ const TopPage = () => {
                 window.alert('アカウントが存在しません')
             }
         }
+    }
+
+    const showMatchHistory = () => {
+        navigate('/PersonalRecord')
     }
 
     return (

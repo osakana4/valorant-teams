@@ -9,10 +9,10 @@ function App() {
   return (
     <Provider>
       <BrowserRouter>
-        <h1>VALORANT TEAMS</h1>
+        <h1 style={{textAlign: 'center'}}>VALORANT TEAMS</h1>
         <Routes>
           <Route path="/" element={<TopPage />} />
-          <Route path="/PersonalRecord" element={<PersonalRecord />} />
+          <Route path="/:name" element={<PersonalRecord />} />
         </Routes>
       </BrowserRouter>
     </Provider>

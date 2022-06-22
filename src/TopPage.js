@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/system'
 import Paper from '@mui/material/Paper'
@@ -27,11 +27,12 @@ const BackGroundPaper = styled(Paper)({
 
 const PlayersPaper = styled(Paper)({
     width: '300px',
-    height: '40em',
+    height: '30em',
     margin: '10px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    overflow: 'scroll'
 })
 
 const ResultPaper = styled(Paper)({
@@ -41,20 +42,13 @@ const ResultPaper = styled(Paper)({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'center'
-})
-
-const MapPaper = styled(Paper)({
-    width: '330px',
-    height: '185px',
-    margin: '10px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    overflow: 'scroll'
 })
 
 const AddPlayerPaper = styled(Paper)({
-    width: '280px',
+    width: '300px',
+    height: '8em',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
@@ -62,6 +56,16 @@ const AddPlayerPaper = styled(Paper)({
 
 const StyledButton = styled(Button)({
     margin: '5px',
+})
+
+const RecordButton = styled(Button)({
+    backgroundImage: `url(${VltLogo})`,
+    backgroundColor: 'red',
+    backgroundBlendMode: 'lighten',
+    backgroundSize: 'cover',
+    width: '30px',
+    height: '25px',
+    margin: 'auto'
 })
 
 const MapButton = styled(Button)({
@@ -98,19 +102,25 @@ const TopPage = () => {
         return playerNameList.sort().map((player) => {
             return (
                 <div style={{display: 'flex',
-                              flexDirection: 'row'}} key={player.playerTag}>
-                    <FormControlLabel value={player.playerName} control={<CheckBox />} label={player.playerName} key={player.playerName} />
-                    <button style={{backgroundImage: `url(${VltLogo})`,
-                                    backgroundColor: 'red',
-                                    backgroundBlendMode: 'lighten',
-                                    backgroundSize: 'cover',
-                                    width: '30px',
-                                    height: '25px',
-                                    margin: 'auto'}}
-                            onClick={showMatchHistory}></button>
+                              flexDirection: 'row'}} key={player.playerName}>
+                    <FormControlLabel value={player.playerName} control={<CheckBox />} label={player.playerName} key={player.playerTag} />
+                    <button style={{
+                                backgroundImage: `url(${VltLogo})`,
+                                backgroundColor: 'red',
+                                backgroundBlendMode: 'lighten',
+                                backgroundSize: 'cover',
+                                width: '30px',
+                                height: '25px',
+                                margin: 'auto'
+                            }}
+                            onClick={(e) => showMatchHistory(player.playerName, player.playerTag)}></button>
                 </div>
             )
         })
+    }
+
+    const showMatchHistory = (name, tag) => {
+        navigate(`${name}`, {state: {playerName: name, playerTag: tag}})
     }
 
     const drawMaps = () => {
@@ -189,17 +199,17 @@ const TopPage = () => {
         }
     }
 
-    const showMatchHistory = () => {
-        navigate('/PersonalRecord')
-    }
-
     return (
         <BackGroundPaper>
-            <PlayersPaper>
-                <h2>Players</h2>
-                <FormGroup>
-                    {drawPlayers()}
-                </FormGroup>
+            <div style={{display: 'flex',
+                         flexDirection: 'column',
+                         alignItems: 'center'}}>
+                <PlayersPaper>
+                    <h2>Players</h2>
+                    <FormGroup>
+                        {drawPlayers()}
+                    </FormGroup>
+                </PlayersPaper>
                 <AddPlayerPaper>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <TextField margin="normal" id="userName" label="UserName" onChange={handleUserName} />
@@ -209,7 +219,7 @@ const TopPage = () => {
                         Add Player
                     </StyledButton>
                 </AddPlayerPaper>
-            </PlayersPaper>
+            </div>
             <ResultPaper>
                 {drawMaps()}
             </ResultPaper>

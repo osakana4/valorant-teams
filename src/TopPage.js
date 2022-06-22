@@ -72,12 +72,25 @@ const MapButton = styled(Button)({
 })
 
 const TopPage = () => {
+    const ValorantAPI = require("unofficial-valorant-api")
+
     const vltMaps = ['Ascent', 'Bind', 'Split', 'Icebox', 'Haven', 'Fracture', 'Breeze']
     const [playerCheck, setPlayerCheck] = useContext(PlayerCheckLimit)
     const [playerNameList, setPlayerNameList] = useContext(PlayerNameList)
     const newPlayer = {
         playerName: '',
         playerTag: ''
+    }
+
+    async function authAccount(name, tag) {
+        const accountData = await ValorantAPI.getAccount(name, tag)
+        if (accountData.status === 200) {
+            console.log('true')
+            return true
+        } else {
+            console.log('false')
+            return false
+        }
     }
 
     const drawPlayers = () => {
@@ -143,7 +156,7 @@ const TopPage = () => {
         newPlayer.playerTag = e.target.value
     }
 
-    const handleAddClick = () => {
+    const handleAddClick = async () => {
         var nameForm = document.getElementById("userName")
         var tagForm = document.getElementById("userTag")
         if (nameForm.value.length === 0 || tagForm.value.length !== 4) {
@@ -151,10 +164,16 @@ const TopPage = () => {
             nameForm.value = null
             tagForm.value = null
         } else {
-            playerNameList.push(newPlayer)
-            setPlayerNameList([...playerNameList])
-            nameForm.value = null
-            tagForm.value = null
+            if (await authAccount(nameForm.value, tagForm.value)) {
+                playerNameList.push(newPlayer) 
+                setPlayerNameList([...playerNameList])
+                nameForm.value = null
+                tagForm.value = null
+            } else {
+                nameForm.value = null
+                tagForm.value = null
+                window.alert('アカウントが存在しません')
+            }
         }
     }
 
@@ -165,14 +184,6 @@ const TopPage = () => {
                 <FormGroup>
                     {drawPlayers()}
                 </FormGroup>
-                {/* <FormGroup>
-                    <FormControlLabel value="Player1" control={<CheckBox />} label="Player1" />
-                    <FormControlLabel value="Player2" control={<CheckBox />} label="Player2" />
-                    <FormControlLabel value="Player3" control={<CheckBox />} label="Player3" />
-                    <FormControlLabel value="Player4" control={<CheckBox />} label="Player4" />
-                    <FormControlLabel value="Player5" control={<CheckBox />} label="Player5" />
-                    <FormControlLabel value="Player5" control={<CheckBox />} label="Player6" />
-                </FormGroup> */}
                 <AddPlayerPaper>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <TextField margin="normal" id="userName" label="UserName" onChange={handleUserName} />
